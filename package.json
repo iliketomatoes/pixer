@@ -1,0 +1,53 @@
+{
+  "name": "pixer",
+  "version": "0.1.0-beta.1",
+  "description": "add some pixel-art canvas borders between html elements",
+  "main": "dist/index.js",
+  "jsnext:main": "dist/index.mjs",
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -c -w",
+    "test": "./node_modules/karma/bin/karma start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iliketomatoes/swipe-custom-event.git"
+  },
+  "keywords": [
+    "canvas",
+    "border",
+	"html",
+	"pixel",
+	"pixel-art"
+  ],
+  "author": "Giancarlo Soverini",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/iliketomatoes/swipe-custom-event/issues"
+  },
+  "homepage": "https://github.com/iliketomatoes/swipe-custom-event#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-es2015-rollup": "^1.2.0",
+    "babel-register": "^6.18.0",
+    "babelrc-rollup": "^3.0.0",
+    "chai": "^3.5.0",
+    "eslint": "^3.0.1",
+    "karma": "^1.1.0",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-fixture": "^0.2.6",
+    "karma-html2js-preprocessor": "^1.0.0",
+    "karma-mocha": "^1.1.1",
+    "karma-mocha-reporter": "^2.0.4",
+    "mocha": "^3.0.2",
+    "rollup": "^0.36.3",
+    "rollup-plugin-babel": "^2.6.1",
+    "rollup-watch": "^2.5.0",
+    "simulant": "^0.2.2",
+    "tslint": "^3.15.1",
+    "typescript": "^2.0.8"
+  },
+  "typings": "./lib/index.ts"
+}

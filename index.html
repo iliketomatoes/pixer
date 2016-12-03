@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Pixer.js</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.yellow-purple.min.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+</head>
+
+<body>
+	<header>
+		<h1>Pixer.js</h1>
+	</header>
+	<main role="main">
+		<div id="test" style="width:100%; height:200px; background: green;"></div>
+		<div class="js-pixer" data-pixer style="width:100%; height:100px;"></div>
+		<div id="test2" style="width:100%; height:200px; background: pink;"></div>
+	</main>
+	<script src="dist/index.js"></script>
+	<script>
+		var pxr = window.pixer();
+		console.log(pxr);
+	</script>
+</body>
+
+</html>
