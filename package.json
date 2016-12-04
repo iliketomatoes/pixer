@@ -7,7 +7,8 @@
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -c -w",
-    "test": "./node_modules/karma/bin/karma start"
+    "test": "./node_modules/karma/bin/karma start",
+    "lint": "tslint ./lib/**/*.ts -t verbose"
   },
   "repository": {
     "type": "git",
@@ -16,9 +17,9 @@
   "keywords": [
     "canvas",
     "border",
-	"html",
-	"pixel",
-	"pixel-art"
+    "html",
+    "pixel",
+    "pixel-art"
   ],
   "author": "Giancarlo Soverini",
   "license": "AGPL-3.0",
