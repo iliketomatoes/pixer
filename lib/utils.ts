@@ -1,12 +1,10 @@
 export interface PixerOptions {
-	minSquareWidth: number;
-	stripes: number
+	stripes: number;
 }
 
 export interface PixerSize {
 	width: number;
 	height: number;
-	ratio: number;
 }
 
 export interface PixerColors {

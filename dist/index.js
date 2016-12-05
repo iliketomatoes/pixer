@@ -255,11 +255,11 @@ var Pixer;
     var idCursor = 0;
     var IDs = [];
     var defaults$$1 = {
-        minSquareWidth: 100,
         stripes: 4
     };
     function init() {
         var targets = document.querySelectorAll('canvas[data-pixer]');
+        var options = void 0;
         var _iteratorNormalCompletion = true;
         var _didIteratorError = false;
         var _iteratorError = undefined;
@@ -271,7 +271,13 @@ var Pixer;
                 if (el.tagName.toLowerCase() === 'canvas') {
                     // If elements are already initialized
                     if (el.hasAttribute('data-pixer-id')) continue;
-                    setupCanvas(el);
+                    options = el.getAttribute('data-pixer');
+                    options = options != '' ? JSON.parse(options) : {};
+                    // Reset data-pixer attribute
+                    el.setAttribute('data-pixer', '');
+                    setupCanvas(el, options);
+                } else {
+                    console.error('Pixer.js: target must be a canvas element');
                 }
             }
         } catch (err) {
@@ -290,19 +296,26 @@ var Pixer;
         }
     }
     Pixer.init = init;
-    function setupCanvas(el) {
-        var canvasSize = setSize(el);
-        // Stringify options so we can put them into the HTML data attribute
-        // let options = JSON.stringify(settings);
-        var defaultSettings = JSON.stringify(defaults$$1);
+    function setupCanvas(canvas, options) {
+        var settings = Object.assign(defaults$$1, options);
         var canvasId = 'pixer_' + idCursor;
-        el.setAttribute('data-pixer-id', canvasId);
-        el.setAttribute('data-pixer-opts', defaultSettings);
+        canvas.setAttribute('data-pixer-id', canvasId);
+        // Stringify settings so we can put them into the HTML data attribute
+        canvas.setAttribute('data-pixer-opts', JSON.stringify(settings));
         // Icrease the cursor
         idCursor++;
         // Store the id
         IDs.push(canvasId);
-        paint(el, canvasSize, defaults$$1);
+        reflow(canvas);
+    }
+    function reflow(canvas) {
+        var canvasSize = setSize(canvas);
+        clearCanvas(canvas, canvasSize);
+        paint(canvas, canvasSize, defaults$$1);
+    }
+    function clearCanvas(canvas, canvasSize) {
+        var ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
     function paint(canvas, canvasSize, options) {
         var colors = setBgColor(canvas, canvasSize, options);
@@ -331,8 +344,7 @@ var Pixer;
         var height = canvas.clientHeight;
         return {
             width: width,
-            height: height,
-            ratio: width / height
+            height: height
         };
     }
     function getSettings(options) {

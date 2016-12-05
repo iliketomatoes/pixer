@@ -2,9 +2,9 @@ import { PixerOptions,
 	PixerSize,
 	PixerColors,
 	colourGradientor,
- 	getBgColor,
- 	turnRgbIntoArray,
- 	getGradientWeight } from './utils';
+	getBgColor,
+	turnRgbIntoArray,
+	getGradientWeight } from './utils';
 
 namespace Pixer {
 
@@ -13,39 +13,44 @@ namespace Pixer {
 	let IDs: string[] = [];
 
 	let defaults: PixerOptions = {
-		minSquareWidth: 100,
 		stripes: 4
 	};
 
 	export function init() {
 
 		let targets: NodeListOf<Element> = document.querySelectorAll('canvas[data-pixer]');
+		let options: any;
 
 		for (let el of targets) {
-
 			if (el.tagName.toLowerCase() === 'canvas') {
+
 				// If elements are already initialized
 				if (el.hasAttribute('data-pixer-id')) continue;
 
-				setupCanvas(<HTMLCanvasElement>el);
+				options = el.getAttribute('data-pixer');
+				options = options != '' ? JSON.parse(options) : {};
+
+				// Reset data-pixer attribute
+				el.setAttribute('data-pixer', '');
+
+				setupCanvas(<HTMLCanvasElement>el, options);
+			} else {
+				console.error('Pixer.js: target must be a canvas element');
 			}
 
 		}
 
 	}
 
-	function setupCanvas(el: HTMLCanvasElement) {
+	function setupCanvas(canvas: HTMLCanvasElement, options: any) {
 
-		let canvasSize = setSize(el);
-
-		// Stringify options so we can put them into the HTML data attribute
-		// let options = JSON.stringify(settings);
-		let defaultSettings = JSON.stringify(defaults);
+		let settings = Object.assign(defaults, options);
 
 		let canvasId = 'pixer_' + idCursor;
+		canvas.setAttribute('data-pixer-id', canvasId);
 
-		el.setAttribute('data-pixer-id', canvasId);
-		el.setAttribute('data-pixer-opts', defaultSettings);
+		// Stringify settings so we can put them into the HTML data attribute
+		canvas.setAttribute('data-pixer-opts', JSON.stringify(settings));
 
 		// Icrease the cursor
 		idCursor++;
@@ -53,13 +58,22 @@ namespace Pixer {
 		// Store the id
 		IDs.push(canvasId);
 
-		paint(el, canvasSize, defaults);
+		reflow(canvas);
+	}
+
+	function reflow(canvas: HTMLCanvasElement) {
+		let canvasSize = setSize(canvas);
+		clearCanvas(canvas, canvasSize);
+		paint(canvas, canvasSize, defaults);
+	}
+
+	function clearCanvas(canvas: HTMLCanvasElement, canvasSize: PixerSize) {
+		const ctx = canvas.getContext('2d');
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
 	}
 
 	function paint(canvas: HTMLCanvasElement, canvasSize: PixerSize, options: PixerOptions) {
-
 		let colors = setBgColor(canvas, canvasSize, options);
-
 		setSquares(canvas, canvasSize, colors, options);
 	}
 
@@ -96,8 +110,7 @@ namespace Pixer {
 
 		return {
 			width: width,
-			height: height,
-			ratio: width / height
+			height: height
 		};
 	}
 
@@ -121,13 +134,13 @@ namespace Pixer {
 
 			let startingY = (squareDiagonal / 2) * j;
 
-			let gradientWeight = getGradientWeight(j+1, stripes);
+			let gradientWeight = getGradientWeight(j + 1, stripes);
 			let color1 = colourGradientor(gradientWeight.odd, colors.nextRGB, colors.previousRGB);
 			let color2 = colourGradientor(gradientWeight.even, colors.nextRGB, colors.previousRGB);
 
 			for (let i = 0; i <= squaresPerStripe; i++) {
 
-				let startingX = (squareDiagonal / 2 * ((i * 2) + 1)) - (j % 2) * (squareDiagonal / 2);
+				let startingX = (squareDiagonal / 2 * ((i * 2) + 1)) - ((j % 2) * (squareDiagonal / 2));
 
 				ctx.save();
 
@@ -138,14 +151,12 @@ namespace Pixer {
 					} else {
 						ctx.fillStyle = color2;
 					}
-
 				} else {
 					if (j % 2 === 0) {
 						ctx.fillStyle = color2;
 					} else {
 						ctx.fillStyle = color1;
 					}
-
 				}
 
 				ctx.translate(startingX, startingY);
@@ -153,9 +164,7 @@ namespace Pixer {
 				ctx.fillRect(0, 0, squareSide, squareSide);
 				ctx.restore();
 			}
-
 		}
-
 	}
 
 	export class API {
