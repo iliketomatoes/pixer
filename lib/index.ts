@@ -121,11 +121,8 @@ namespace Pixer {
 	function setSquares(canvas: HTMLCanvasElement, size: PixerSize, colors: PixerColors, options: PixerOptions) {
 
 		const stripes = options.stripes;
-
-		const squareDiagonal: number = size.height / (stripes - 1);
-
+		const squareDiagonal: number = stripes > 2 ? (size.height / (stripes - 1)) : (size.height / stripes);
 		const squareSide: number = squareDiagonal / Math.SQRT2;
-
 		const squaresPerStripe: number = Math.round(size.width / squareDiagonal);
 
 		const ctx = canvas.getContext("2d");

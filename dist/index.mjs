@@ -346,7 +346,7 @@ var Pixer;
     }
     function setSquares(canvas, size, colors, options) {
         var stripes = options.stripes;
-        var squareDiagonal = size.height / (stripes - 1);
+        var squareDiagonal = stripes > 2 ? size.height / (stripes - 1) : size.height / stripes;
         var squareSide = squareDiagonal / Math.SQRT2;
         var squaresPerStripe = Math.round(size.width / squareDiagonal);
         var ctx = canvas.getContext("2d");
