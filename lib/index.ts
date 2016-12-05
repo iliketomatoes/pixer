@@ -20,6 +20,8 @@ namespace Pixer {
 
 		let targets: NodeListOf<Element> = document.querySelectorAll('canvas[data-pixer]');
 		let options: any;
+		let debounced: any = null;
+		let delay: number = 400;
 
 		for (let el of targets) {
 			if (el.tagName.toLowerCase() === 'canvas') {
@@ -37,16 +39,22 @@ namespace Pixer {
 			} else {
 				console.error('Pixer.js: target must be a canvas element');
 			}
-
 		}
 
+		window.addEventListener('resize', function() {
+			clearTimeout(debounced);
+			debounced = setTimeout(reflowAll, delay);
+		});
 	}
 
-	function setupCanvas(canvas: HTMLCanvasElement, options: any) {
+	function setupCanvas(canvas: HTMLCanvasElement, options: PixerOptions) {
 
-		let settings = Object.assign(defaults, options);
+		let settings,
+			canvasId;
 
-		let canvasId = 'pixer_' + idCursor;
+		settings = Object.assign(defaults, options);
+
+		canvasId = 'pixer_' + idCursor;
 		canvas.setAttribute('data-pixer-id', canvasId);
 
 		// Stringify settings so we can put them into the HTML data attribute
@@ -58,13 +66,26 @@ namespace Pixer {
 		// Store the id
 		IDs.push(canvasId);
 
-		reflow(canvas);
+		reflow(canvas, settings);
 	}
 
-	function reflow(canvas: HTMLCanvasElement) {
+	function reflowAll() {
+		let target,
+			options,
+			settings;
+
+		for(let id of IDs) {
+			target = <HTMLCanvasElement>document.querySelector(`canvas[data-pixer-id="${id}"]`);
+			options = JSON.parse(target.getAttribute('data-pixer-opts'));
+			settings = Object.assign(defaults, options);
+			reflow(target, settings);
+		}
+	}
+
+	function reflow(canvas: HTMLCanvasElement, settings: PixerOptions) {
 		let canvasSize = setSize(canvas);
 		clearCanvas(canvas, canvasSize);
-		paint(canvas, canvasSize, defaults);
+		paint(canvas, canvasSize, settings);
 	}
 
 	function clearCanvas(canvas: HTMLCanvasElement, canvasSize: PixerSize) {
@@ -171,6 +192,10 @@ namespace Pixer {
 
 		public static get Instance(): API {
 			return this._instance || (this._instance = new this());
+		}
+
+		public static reflow() {
+			reflowAll();
 		}
 	}
 }

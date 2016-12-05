@@ -260,6 +260,8 @@ var Pixer;
     function init() {
         var targets = document.querySelectorAll('canvas[data-pixer]');
         var options = void 0;
+        var debounced = null;
+        var delay = 400;
         var _iteratorNormalCompletion = true;
         var _didIteratorError = false;
         var _iteratorError = undefined;
@@ -294,11 +296,18 @@ var Pixer;
                 }
             }
         }
+
+        window.addEventListener('resize', function () {
+            clearTimeout(debounced);
+            debounced = setTimeout(reflowAll, delay);
+        });
     }
     Pixer.init = init;
     function setupCanvas(canvas, options) {
-        var settings = Object.assign(defaults$$1, options);
-        var canvasId = 'pixer_' + idCursor;
+        var settings = void 0,
+            canvasId = void 0;
+        settings = Object.assign(defaults$$1, options);
+        canvasId = 'pixer_' + idCursor;
         canvas.setAttribute('data-pixer-id', canvasId);
         // Stringify settings so we can put them into the HTML data attribute
         canvas.setAttribute('data-pixer-opts', JSON.stringify(settings));
@@ -306,12 +315,44 @@ var Pixer;
         idCursor++;
         // Store the id
         IDs.push(canvasId);
-        reflow(canvas);
+        reflow(canvas, settings);
     }
-    function reflow(canvas) {
+    function reflowAll() {
+        var target = void 0,
+            options = void 0,
+            settings = void 0;
+        var _iteratorNormalCompletion2 = true;
+        var _didIteratorError2 = false;
+        var _iteratorError2 = undefined;
+
+        try {
+            for (var _iterator2 = IDs[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                var id = _step2.value;
+
+                target = document.querySelector('canvas[data-pixer-id="' + id + '"]');
+                options = JSON.parse(target.getAttribute('data-pixer-opts'));
+                settings = Object.assign(defaults$$1, options);
+                reflow(target, settings);
+            }
+        } catch (err) {
+            _didIteratorError2 = true;
+            _iteratorError2 = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                    _iterator2.return();
+                }
+            } finally {
+                if (_didIteratorError2) {
+                    throw _iteratorError2;
+                }
+            }
+        }
+    }
+    function reflow(canvas, settings) {
         var canvasSize = setSize(canvas);
         clearCanvas(canvas, canvasSize);
-        paint(canvas, canvasSize, defaults$$1);
+        paint(canvas, canvasSize, settings);
     }
     function clearCanvas(canvas, canvasSize) {
         var ctx = canvas.getContext('2d');
@@ -391,6 +432,11 @@ var Pixer;
         }
 
         createClass(API, null, [{
+            key: 'reflow',
+            value: function reflow() {
+                reflowAll();
+            }
+        }, {
             key: 'Instance',
             get: function get() {
                 return this._instance || (this._instance = new this());
