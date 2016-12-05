@@ -334,16 +334,18 @@ var Pixer;
     }
     function setSquares(canvas, size, colors, options) {
         var stripes = options.stripes;
-        var squareSide = Math.round(size.height / options.stripes);
-        var squaresPerStripe = Math.round(size.width / squareSide);
+        var squareDiagonal = size.height / (stripes - 1);
+        var squareSide = squareDiagonal / Math.SQRT2;
+        var squaresPerStripe = Math.round(size.width / squareDiagonal);
         var ctx = canvas.getContext("2d");
         for (var j = 0; j < stripes; j++) {
+            var startingY = squareDiagonal / 2 * j;
             var gradientWeight = getGradientWeight(j + 1, stripes);
-            console.log(gradientWeight);
             var color1 = colourGradientor(gradientWeight.odd, colors.nextRGB, colors.previousRGB);
             var color2 = colourGradientor(gradientWeight.even, colors.nextRGB, colors.previousRGB);
             for (var i = 0; i <= squaresPerStripe; i++) {
-                var x = squareSide * i;
+                var startingX = squareDiagonal / 2 * (i * 2 + 1) - j % 2 * (squareDiagonal / 2);
+                ctx.save();
                 if (i % 2 === 0) {
                     if (j % 2 === 0) {
                         ctx.fillStyle = color1;
@@ -357,7 +359,10 @@ var Pixer;
                         ctx.fillStyle = color1;
                     }
                 }
-                ctx.fillRect(x, j * squareSide, squareSide, squareSide);
+                ctx.translate(startingX, startingY);
+                ctx.rotate(Math.PI / 4);
+                ctx.fillRect(0, 0, squareSide, squareSide);
+                ctx.restore();
             }
         }
     }
