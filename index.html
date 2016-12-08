@@ -6,22 +6,207 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.yellow-purple.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism-tomorrow.min.css">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<style>
+		header {
+			padding: 3rem 1rem;
+			color: hsla(200,0%,0%,.74) !important;
+		}
+
+		a {
+			cursor: pointer;
+			color: white;
+			text-decoration: underline;
+		}
+
+		a:visited,
+		a:hover,
+		a:active {
+			color: white;
+			text-decoration: underline;
+		}
+
+		.header__subtitle {
+			max-width: 750px;
+		}
+
+		.green {
+			background: #64e764;
+		}
+
+		.js-pixer {
+			width: 100%;
+			height: 80px;
+		}
+
+		.js-pixer--small {
+			width: 100%;
+			height: 40px;
+		}
+
+		.js-pixer--big {
+			width: 100%;
+			height: 120px;
+		}
+
+		.pixer-guide {
+			padding: 3rem 1rem;
+		}
+
+		.pixer-guide article {
+			max-width: 750px;
+			padding-bottom: 2.6rem;
+		}
+
+		.pixer-guide p{
+			margin: 16px 0;
+			font-size: 1.25rem;
+		}
+
+		.white {
+			color: #FFF !important;
+		}
+
+		#pixer-1 {
+			background: #8638ad;
+		}
+
+		#pixer-2 {
+			background: #aa64cd;
+		}
+
+		footer {
+			padding: 1rem;
+			background: #341643;
+			color: #ffc0cb !important;
+		}
+
+		pre {
+			max-width: 700px;
+		}
+
+		@media screen and (min-width: 769px) {
+			header {
+				padding: 4rem 2rem;
+			}
+			.pixer-guide {
+				padding: 4rem 2rem;
+			}
+			footer {
+				padding: 1rem 2rem;
+				background: #341643;
+				color: #ffc0cb !important;
+			}
+		}
+	</style>
 </head>
 
 <body>
-	<header style="background: #FFF;">
+	<header class="green">
 		<h1>Pixer.js</h1>
+		<h2 class="header__subtitle">Automatically generate pixelated gradient between two block elements.</h2>
 	</header>
 	<main role="main">
-		<div style="background: #FFF;"></div>
-		<canvas class="js-pixer" data-pixer style="width:100%; height:80px;"></canvas>
-		<div id="test" style="width:100%; height:500px; background: #8638ad;"></div>
-		<canvas class="js-pixer" data-pixer='{"stripes":"3"}' style="width:100%; height:80px;"></canvas>
-		<div id="test2" style="width:100%; height:500px; background: #aa64cd;"></div>
-		<canvas class="js-pixer" data-pixer='{"stripes":"2"}' style="width:100%; height:80px;"></canvas>
-		<div id="test2" style="width:100%; height:100px; background: #8fbc8f;"></div>
+		<div class="green"></div>
+		<canvas class="js-pixer--big" data-pixer='{"stripes":"3"}'></canvas>
+		<div class="pixer-guide white" id="pixer-1">
+			<article>
+				<h2>Getting started</h2>
+				<p>Download this plugin from the <a href="https://github.com/iliketomatoes/pixer">Github</a> repository or install it through NPM:</p>
+				<pre><code class="language-sh">$ npm install pixer</code></pre>
+				<p>Or install it through Bower:</p>
+				<pre><code class="language-sh">$ bower install pixer</code></pre>
+			</article>
+			<article>
+				<h2>Required assets</h2>
+				<p>Set some CSS rules for the canvas elements we are going to use.<br>
+				These are some <strong>suggested</strong> classes:</p>
+<pre><code class="language-css">.js-pixer {
+	width: 100%;
+	height: 80px;
+}
+
+.js-pixer--big {
+	width: 100%;
+	height: 120px;
+}
+
+.js-pixer--small {
+	width: 100%;
+	height: 40px;
+}</code></pre>
+			<p>And import the Pixer library:</p>
+<pre><code class="language-markup">&lt;script src="path/to/dist/pixer.js"&gt;&lt;/script&gt;</code></pre>
+			</article>
+			<article>
+				<h2>Required markup</h2>
+				<p>Add the <strong>data-pixer</strong> attribute to the canvas element in between the two block elements
+				you want to apply the pixelated border to. <br> It's mandatory to set a CSS property for the background of the two target elements:</p>
+<pre><code class="language-markup">&lt!-- target 1 --&gt;
+&lt;div style="background:&lt;COLOR&gt;"&gt;&lt;/div&gt;
+
+&lt!-- the pixelated gradient border will be generated inside this canvas --&gt;
+&lt;canvas data-pixer class="js-pixer"&gt;&lt;/canvas&gt;
+
+&lt!-- target 2 --&gt;
+&lt;div style="background:&lt;ANOTHER COLOR&gt;"&gt;&lt;/div&gt;
+</code></pre>
+			</article>
+		</div>
+		<canvas class="js-pixer" data-pixer='{"stripes":"4"}'></canvas>
+		<div class="pixer-guide" id="pixer-2">
+			<article>
+				<h2>Start it up</h2>
+				<p>This Javascript library is UMD compliant, so you can consume it even like this:</p>
+<pre><code class="language-javascript">var pixer = require('pixer');
+
+// Call the init function which returns the API object handler
+var pixerApi = pixer();</code></pre>
+				<p>Or just get the global object bound to the window:</p>
+<pre><code class="language-javascript">var pixer = window.pixer;
+
+// Call the init function which returns the API object handler
+var pixerApi = pixer();</code></pre>
+			</article>
+			<article>
+				<h2>Set some options</h2>
+				<p>At the moment the only customizable setting is the number of stripes that the
+				pixelated border will be formed of.
+				The default amount of stripes is <strong>4</strong>. <br>
+				You can set the custom amount of stripes by passing a valid JSON object into the
+				<i>data-pixer</i> attribute:</p>
+<pre><code class="language-markup">&lt;div style="background:&lt;COLOR&gt;"&gt;&lt;/div&gt;
+
+&lt;canvas data-pixer='{"stripes":"4"}' class="js-pixer"&gt;&lt;/canvas&gt;
+
+&lt;div style="background:&lt;ANOTHER COLOR&gt;"&gt;&lt;/div&gt;
+</code></pre>
+			</article>
+			<article>
+				<h2>API</h2>
+				<p>Available methods:</p>
+<pre><code class="language-javascript">var pixerApi = pixer();
+
+// Reflow all the pixelated borders in the page
+pixerApi.reflowAll();</code></pre>
+			</article>
+		</div>
+		<canvas class="js-pixer--small" data-pixer='{"stripes":"3"}'></canvas>
+		<footer>
+			<span>Made with code by Giancarlo Soverini - <a href="https://github.com/iliketomatoes">iliketomatoes@github</a></span>
+			<br>
+			<span>License AGPL-3.0</span>
+		</footer>
 	</main>
+	<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+	<script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/components/prism-core.min.js"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/components/prism-clike.min.js"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/components/prism-javascript.min.js"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/components/prism-bash.min.js"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/components/prism-css.min.js"></script>
+	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/components/prism-markup.min.js"></script>
 	<script src="dist/index.js"></script>
 	<script>
 		var pxr = window.pixer();

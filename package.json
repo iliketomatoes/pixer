@@ -1,7 +1,7 @@
 {
   "name": "pixer",
   "version": "0.1.0-beta.1",
-  "description": "add some pixel-art canvas borders between html elements",
+  "description": "add pixelated canvas gradient between html elements",
   "main": "dist/index.js",
   "jsnext:main": "dist/index.mjs",
   "scripts": {
@@ -12,21 +12,23 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/iliketomatoes/swipe-custom-event.git"
+    "url": "git+https://github.com/iliketomatoes/pixer.git"
   },
   "keywords": [
     "canvas",
     "border",
     "html",
     "pixel",
+	"pixelated",
+	"gradient",
     "pixel-art"
   ],
   "author": "Giancarlo Soverini",
   "license": "AGPL-3.0",
   "bugs": {
-    "url": "https://github.com/iliketomatoes/swipe-custom-event/issues"
+    "url": "https://github.com/iliketomatoes/pixer/issues"
   },
-  "homepage": "https://github.com/iliketomatoes/swipe-custom-event#readme",
+  "homepage": "https://github.com/iliketomatoes/pixer#readme",
   "dependencies": {},
   "devDependencies": {
     "babel-preset-es2015": "^6.18.0",
