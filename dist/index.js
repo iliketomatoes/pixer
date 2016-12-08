@@ -1,7 +1,7 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-  typeof define === 'function' && define.amd ? define(factory) :
-  (global.pixer = factory());
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+    typeof define === 'function' && define.amd ? define(factory) :
+    (global.pixer = factory());
 }(this, (function () { 'use strict';
 
 // http://stackoverflow.com/a/24253254/1550955
@@ -22,7 +22,7 @@ function getBgColor(el) {
 function turnRgbIntoArray(rgb) {
     var numberPattern = /\d+/g;
     return rgb.match(numberPattern).map(function (n) {
-        return parseInt(n);
+        return parseInt(n, 10);
     });
 }
 function turnArrayIntoRgb(rgbArr) {
@@ -40,221 +40,11 @@ function getGradientWeight(lineNumber, totalLines) {
     };
 }
 
-var asyncGenerator = function () {
-  function AwaitValue(value) {
-    this.value = value;
-  }
-
-  function AsyncGenerator(gen) {
-    var front, back;
-
-    function send(key, arg) {
-      return new Promise(function (resolve, reject) {
-        var request = {
-          key: key,
-          arg: arg,
-          resolve: resolve,
-          reject: reject,
-          next: null
-        };
-
-        if (back) {
-          back = back.next = request;
-        } else {
-          front = back = request;
-          resume(key, arg);
-        }
-      });
-    }
-
-    function resume(key, arg) {
-      try {
-        var result = gen[key](arg);
-        var value = result.value;
-
-        if (value instanceof AwaitValue) {
-          Promise.resolve(value.value).then(function (arg) {
-            resume("next", arg);
-          }, function (arg) {
-            resume("throw", arg);
-          });
-        } else {
-          settle(result.done ? "return" : "normal", result.value);
-        }
-      } catch (err) {
-        settle("throw", err);
-      }
-    }
-
-    function settle(type, value) {
-      switch (type) {
-        case "return":
-          front.resolve({
-            value: value,
-            done: true
-          });
-          break;
-
-        case "throw":
-          front.reject(value);
-          break;
-
-        default:
-          front.resolve({
-            value: value,
-            done: false
-          });
-          break;
-      }
-
-      front = front.next;
-
-      if (front) {
-        resume(front.key, front.arg);
-      } else {
-        back = null;
-      }
-    }
-
-    this._invoke = send;
-
-    if (typeof gen.return !== "function") {
-      this.return = undefined;
-    }
-  }
-
-  if (typeof Symbol === "function" && Symbol.asyncIterator) {
-    AsyncGenerator.prototype[Symbol.asyncIterator] = function () {
-      return this;
-    };
-  }
-
-  AsyncGenerator.prototype.next = function (arg) {
-    return this._invoke("next", arg);
-  };
-
-  AsyncGenerator.prototype.throw = function (arg) {
-    return this._invoke("throw", arg);
-  };
-
-  AsyncGenerator.prototype.return = function (arg) {
-    return this._invoke("return", arg);
-  };
-
-  return {
-    wrap: function (fn) {
-      return function () {
-        return new AsyncGenerator(fn.apply(this, arguments));
-      };
-    },
-    await: function (value) {
-      return new AwaitValue(value);
-    }
-  };
-}();
-
-
-
-
-
-var classCallCheck = function (instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-};
-
-var createClass = function () {
-  function defineProperties(target, props) {
-    for (var i = 0; i < props.length; i++) {
-      var descriptor = props[i];
-      descriptor.enumerable = descriptor.enumerable || false;
-      descriptor.configurable = true;
-      if ("value" in descriptor) descriptor.writable = true;
-      Object.defineProperty(target, descriptor.key, descriptor);
-    }
-  }
-
-  return function (Constructor, protoProps, staticProps) {
-    if (protoProps) defineProperties(Constructor.prototype, protoProps);
-    if (staticProps) defineProperties(Constructor, staticProps);
-    return Constructor;
-  };
-}();
-
-
-
-
-
-
-
-var get$1 = function get$1(object, property, receiver) {
-  if (object === null) object = Function.prototype;
-  var desc = Object.getOwnPropertyDescriptor(object, property);
-
-  if (desc === undefined) {
-    var parent = Object.getPrototypeOf(object);
-
-    if (parent === null) {
-      return undefined;
-    } else {
-      return get$1(parent, property, receiver);
-    }
-  } else if ("value" in desc) {
-    return desc.value;
-  } else {
-    var getter = desc.get;
-
-    if (getter === undefined) {
-      return undefined;
-    }
-
-    return getter.call(receiver);
-  }
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var set = function set(object, property, value, receiver) {
-  var desc = Object.getOwnPropertyDescriptor(object, property);
-
-  if (desc === undefined) {
-    var parent = Object.getPrototypeOf(object);
-
-    if (parent !== null) {
-      set(parent, property, value, receiver);
-    }
-  } else if ("value" in desc && desc.writable) {
-    desc.value = value;
-  } else {
-    var setter = desc.set;
-
-    if (setter !== undefined) {
-      setter.call(receiver, value);
-    }
-  }
-
-  return value;
-};
-
 var Pixer;
 (function (Pixer) {
     var idCursor = 0;
     var IDs = [];
-    var defaults$$1 = {
+    var defaults = {
         stripes: 4
     };
     function init() {
@@ -272,9 +62,11 @@ var Pixer;
 
                 if (el.tagName.toLowerCase() === 'canvas') {
                     // If elements are already initialized
-                    if (el.hasAttribute('data-pixer-id')) continue;
+                    if (el.hasAttribute('data-pixer-id')) {
+                        continue;
+                    }
                     options = el.getAttribute('data-pixer');
-                    options = options != '' ? JSON.parse(options) : {};
+                    options = options !== '' ? JSON.parse(options) : {};
                     // Reset data-pixer attribute
                     el.setAttribute('data-pixer', '');
                     setupCanvas(el, options);
@@ -306,7 +98,7 @@ var Pixer;
     function setupCanvas(canvas, options) {
         var settings = void 0,
             canvasId = void 0;
-        settings = Object.assign(defaults$$1, options);
+        settings = Object.assign(defaults, options);
         canvasId = 'pixer_' + idCursor;
         canvas.setAttribute('data-pixer-id', canvasId);
         // Stringify settings so we can put them into the HTML data attribute
@@ -331,7 +123,7 @@ var Pixer;
 
                 target = document.querySelector('canvas[data-pixer-id="' + id + '"]');
                 options = JSON.parse(target.getAttribute('data-pixer-opts'));
-                settings = Object.assign(defaults$$1, options);
+                settings = Object.assign(defaults, options);
                 reflow(target, settings);
             }
         } catch (err) {
@@ -367,7 +159,7 @@ var Pixer;
             previousRGB: getBgColor(canvas.previousElementSibling),
             nextRGB: getBgColor(canvas.nextElementSibling)
         };
-        var ctx = canvas.getContext("2d");
+        var ctx = canvas.getContext('2d');
         ctx.fillStyle = colors.previousRGB;
         ctx.fillRect(0, 0, size.width, size.height / 2);
         ctx.fillStyle = colors.nextRGB;
@@ -388,15 +180,12 @@ var Pixer;
             height: height
         };
     }
-    function getSettings(options) {
-        Object.assign(this.defaults, options);
-    }
     function setSquares(canvas, size, colors, options) {
         var stripes = options.stripes;
         var squareDiagonal = stripes > 2 ? size.height / (stripes - 1) : size.height / stripes;
         var squareSide = squareDiagonal / Math.SQRT2;
         var squaresPerStripe = Math.round(size.width / squareDiagonal);
-        var ctx = canvas.getContext("2d");
+        var ctx = canvas.getContext('2d');
         for (var j = 0; j < stripes; j++) {
             var startingY = squareDiagonal / 2 * j;
             var gradientWeight = getGradientWeight(j + 1, stripes);
@@ -425,27 +214,11 @@ var Pixer;
             }
         }
     }
-
-    var API = function () {
-        function API() {
-            classCallCheck(this, API);
+    Pixer.API = {
+        reflow: function reflow() {
+            reflowAll();
         }
-
-        createClass(API, null, [{
-            key: 'reflow',
-            value: function reflow() {
-                reflowAll();
-            }
-        }, {
-            key: 'Instance',
-            get: function get() {
-                return this._instance || (this._instance = new this());
-            }
-        }]);
-        return API;
-    }();
-
-    Pixer.API = API;
+    };
 })(Pixer || (Pixer = {}));
 function pixer() {
     Pixer.init();

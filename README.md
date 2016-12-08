@@ -1,6 +1,7 @@
 # Pixer
 
 Automatically generate pixelated gradient between two block elements.
+Written in Typescript.
 
 ## Getting started
 
@@ -104,7 +105,7 @@ Available methods:
 	var pixerApi = pixer();
 
 	// Reflow all the pixelated borders in the page
-	pixerApi.reflowAll();
+	pixerApi.reflow();
 
 ```
 

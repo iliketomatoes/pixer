@@ -1,21 +1,4 @@
-export interface PixerOptions {
-	stripes: number;
-}
-
-export interface PixerSize {
-	width: number;
-	height: number;
-}
-
-export interface PixerColors {
-	previousRGB: string;
-	nextRGB: string;
-}
-
-export interface PixerGradientWeight {
-	even: number;
-	odd: number;
-}
+import { PixerGradientWeight } from './core';
 
 // http://stackoverflow.com/a/24253254/1550955
 export function colourGradientor(p: number, first_color: string, second_color: string): string {
@@ -41,14 +24,14 @@ export function getBgColor(el: Element): string {
 // http://stackoverflow.com/a/1183906/1550955
 export function turnRgbIntoArray(rgb: string): number[] {
 	const numberPattern = /\d+/g;
-	return rgb.match(numberPattern).map(n => parseInt(n));
+	return rgb.match(numberPattern).map(n => parseInt(n, 10));
 }
 
 export function turnArrayIntoRgb(rgbArr: number[]): string {
 	return `rgb(${rgbArr[0]}, ${rgbArr[1]}, ${rgbArr[2]})`;
 }
 
-export function getGradientWeight(lineNumber: number, totalLines: number): PixerGradientWeight{
+export function getGradientWeight(lineNumber: number, totalLines: number): PixerGradientWeight {
 	const startingEdge = lineNumber - 1;
 	const endingEdge = lineNumber;
 	const startingEdgeRatio = startingEdge / totalLines;
@@ -57,7 +40,7 @@ export function getGradientWeight(lineNumber: number, totalLines: number): Pixer
 	let deltaRatio = endingEdgeRatio - startingEdgeRatio;
 
 	return {
-		even: startingEdgeRatio + (deltaRatio * 0.33),
-		odd: startingEdgeRatio + (deltaRatio * 0.66)
-	}
+		even: (startingEdgeRatio + (deltaRatio * 0.33)),
+		odd: (startingEdgeRatio + (deltaRatio * 0.66))
+	};
 }

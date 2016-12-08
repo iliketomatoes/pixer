@@ -1,14 +1,15 @@
+import { colourGradientor,
+	getBgColor,
+	getGradientWeight } from './utils';
+
 import { PixerOptions,
 	PixerSize,
 	PixerColors,
-	colourGradientor,
-	getBgColor,
-	turnRgbIntoArray,
-	getGradientWeight } from './utils';
+	PixerApi} from './core';
 
 namespace Pixer {
 
-	let idCursor: number = 0;
+	let idCursor = 0;
 
 	let IDs: string[] = [];
 
@@ -21,16 +22,16 @@ namespace Pixer {
 		let targets: NodeListOf<Element> = document.querySelectorAll('canvas[data-pixer]');
 		let options: any;
 		let debounced: any = null;
-		let delay: number = 400;
+		let delay = 400;
 
 		for (let el of targets) {
 			if (el.tagName.toLowerCase() === 'canvas') {
 
 				// If elements are already initialized
-				if (el.hasAttribute('data-pixer-id')) continue;
+				if (el.hasAttribute('data-pixer-id')) { continue; }
 
 				options = el.getAttribute('data-pixer');
-				options = options != '' ? JSON.parse(options) : {};
+				options = options !== '' ? JSON.parse(options) : {};
 
 				// Reset data-pixer attribute
 				el.setAttribute('data-pixer', '');
@@ -74,7 +75,7 @@ namespace Pixer {
 			options,
 			settings;
 
-		for(let id of IDs) {
+		for (let id of IDs) {
 			target = <HTMLCanvasElement>document.querySelector(`canvas[data-pixer-id="${id}"]`);
 			options = JSON.parse(target.getAttribute('data-pixer-opts'));
 			settings = Object.assign(defaults, options);
@@ -105,7 +106,7 @@ namespace Pixer {
 			nextRGB: getBgColor(canvas.nextElementSibling)
 		};
 
-		const ctx = canvas.getContext("2d");
+		const ctx = canvas.getContext('2d');
 
 		ctx.fillStyle = colors.previousRGB;
 		ctx.fillRect(0, 0, size.width, size.height / 2);
@@ -135,10 +136,6 @@ namespace Pixer {
 		};
 	}
 
-	function getSettings(options: PixerOptions) {
-		Object.assign(this.defaults, options);
-	}
-
 	function setSquares(canvas: HTMLCanvasElement, size: PixerSize, colors: PixerColors, options: PixerOptions) {
 
 		const stripes = options.stripes;
@@ -146,7 +143,7 @@ namespace Pixer {
 		const squareSide: number = squareDiagonal / Math.SQRT2;
 		const squaresPerStripe: number = Math.round(size.width / squareDiagonal);
 
-		const ctx = canvas.getContext("2d");
+		const ctx = canvas.getContext('2d');
 
 		for (let j = 0; j < stripes; j++) {
 
@@ -185,22 +182,15 @@ namespace Pixer {
 		}
 	}
 
-	export class API {
-		private static _instance: API;
-
-		private constructor() { }
-
-		public static get Instance(): API {
-			return this._instance || (this._instance = new this());
-		}
-
-		public static reflow() {
+	export const API: PixerApi = {
+		reflow(): void {
 			reflowAll();
 		}
-	}
+	};
+
 }
 
-function pixer(): Pixer.API {
+function pixer(): PixerApi {
 
 	Pixer.init();
 

@@ -5,10 +5,11 @@
   "main": "dist/index.js",
   "jsnext:main": "dist/index.mjs",
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c && npm run minify",
     "watch": "rollup -c -w",
     "test": "./node_modules/karma/bin/karma start",
-    "lint": "tslint ./lib/**/*.ts -t verbose"
+    "lint": "tslint ./lib/**/*.ts -t verbose",
+    "minify": "uglifyjs ./dist/index.js -o ./dist/index.min.js"
   },
   "repository": {
     "type": "git",
@@ -19,8 +20,8 @@
     "border",
     "html",
     "pixel",
-	"pixelated",
-	"gradient",
+    "pixelated",
+    "gradient",
     "pixel-art"
   ],
   "author": "Giancarlo Soverini",
@@ -37,6 +38,8 @@
     "babelrc-rollup": "^3.0.0",
     "chai": "^3.5.0",
     "eslint": "^3.0.1",
+    "gulp": "^3.9.1",
+    "gulp-header": "^1.8.8",
     "karma": "^1.1.0",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^2.0.0",
@@ -50,7 +53,8 @@
     "rollup-watch": "^2.5.0",
     "simulant": "^0.2.2",
     "tslint": "^3.15.1",
-    "typescript": "^2.0.8"
+    "typescript": "^2.0.8",
+    "uglify-js": "^2.7.5"
   },
   "typings": "./lib/index.ts"
 }

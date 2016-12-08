@@ -74,6 +74,7 @@
 
 		#pixer-2 {
 			background: #aa64cd;
+			color: #000;
 		}
 
 		footer {
@@ -105,7 +106,10 @@
 <body>
 	<header class="green">
 		<h1>Pixer.js</h1>
-		<h2 class="header__subtitle">Automatically generate pixelated gradient between two block elements.</h2>
+		<h2 class="header__subtitle">
+			Automatically generate pixelated gradient between two block elements.
+			Written in Typescript.
+		</h2>
 	</header>
 	<main role="main">
 		<div class="green"></div>
@@ -189,7 +193,7 @@ var pixerApi = pixer();</code></pre>
 <pre><code class="language-javascript">var pixerApi = pixer();
 
 // Reflow all the pixelated borders in the page
-pixerApi.reflowAll();</code></pre>
+pixerApi.reflow();</code></pre>
 			</article>
 		</div>
 		<canvas class="js-pixer--small" data-pixer='{"stripes":"3"}'></canvas>
@@ -207,7 +211,7 @@ pixerApi.reflowAll();</code></pre>
 	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/components/prism-bash.min.js"></script>
 	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/components/prism-css.min.js"></script>
 	<script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/components/prism-markup.min.js"></script>
-	<script src="dist/index.js"></script>
+	<script src="dist/index.min.js"></script>
 	<script>
 		var pxr = window.pixer();
 	</script>
