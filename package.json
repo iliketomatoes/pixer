@@ -1,11 +1,11 @@
 {
   "name": "pixer",
-  "version": "0.1.0-beta.1",
+  "version": "0.1.0",
   "description": "add pixelated canvas gradient between html elements",
   "main": "dist/index.js",
   "jsnext:main": "dist/index.mjs",
   "scripts": {
-    "build": "rollup -c && npm run minify",
+    "build": "rollup -c && npm run minify && gulp",
     "watch": "rollup -c -w",
     "test": "./node_modules/karma/bin/karma start",
     "lint": "tslint ./lib/**/*.ts -t verbose",

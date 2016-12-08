@@ -1,3 +1,10 @@
+/**
+ * pixer - add pixelated canvas gradient between html elements
+ * @version v0.1.0
+ * @link https://github.com/iliketomatoes/pixer#readme
+ * @author Giancarlo Soverini
+ * @license AGPL-3.0
+ */
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
